@@ -1,0 +1,114 @@
+****************
+* Project 0/A Doubly Linked List
+* CS 453
+* Date: 9/4/2015
+* Christian Pixler
+**************** 
+
+OVERVIEW:
+
+This is a generic Doubly Linked List in a shared library.  I took this linked list from my CS 253 folder and modified.
+
+INCLUDED FILES:
+
+doxygen-config
+Makefile
+out
+README 
+
+./include
+
+./lib
+
+./libsrc
+   common.h 
+   List.c
+   List.h
+   Makefile
+   Node.c
+   Node.h
+
+./testsuite
+   Makefile
+   Object.c
+   Object.h
+   RandomTestList.c
+   SimpleTestList.c
+   UnitTestList.c
+
+BUILDING AND RUNNING:
+
+ Command for running the program:
+ 	each test file has its own command for running it.
+ 	UnitTestList - ./UnitTestList
+ 	SimpleTestList - ./SimpleTestList <list size>
+ 	RandomTestList - ./RandomTestList <list size> <number of tests>
+ 
+
+PROGRAM DESIGN:
+
+ This program is a generic doubly linked list in a shared library.  It is a Null terminating list which means
+ that the head of the list's previous is null and the list's tail's next is null.  I modified my CS253 files
+ to make the list a generic list with a shared library.
+ 
+
+TESTING:
+
+ I wrote about 21 tests for this file each of the them checking edge cases to make sure this list
+ is running smoothly.  When running this file every test is passed.  I was provided with two other
+ test files that I have run, and both of those files pass.  When I run the test files through 
+ valgrind it comes back with no memory leaks.
+
+
+DISCUSSION:
+
+ Since I had taken this class last semester, I had already completed most of this assignment.  I did not manage
+ my time very wisely last semester so it did not actually get done, but I was able to complete it this time
+ around.  I had gotten a error when running my RandomTestList from the test suit, so I changed the
+ makefile to copy the executable for all of my files to the main p0 directory.  This took care of that error,
+ but of course I was then left with a segment fault error to try and debug.  I ran gdb and found that I was just
+ not calling the freeNode function correctly.  This took me a little longer to find than I wanted to, but in the 
+ end I did and all is good now.  I then ran valgrind on my RandomTestList file and it seems the small change I
+ made to fiix the segment fault error also caused a memory leak. Not too hard to find though and easy to fix.  
+ All of my other test files were running correctly, but when I wrote the UnitTestList file I had not done any
+ frees, so valgrind was not very happy with me.  I went through the entire file and put in about a milion free
+ statements that should have been there from the get go, but the good new is now that all three of my test files
+ do have any memory leaks possible.
+ 
+
+Valgrind:
+
+ Valgrind - RandomTestList
+ ==658468==
+ ==658468== HEAP SUMMARY:
+ ==658468==     in use at exit: 0 bytes in 0 blocks
+ ==658468==   total heap usage: 49 allocs, 49 frees, 918 bytes allocated
+ ==658468==
+ ==658468== All heap blocks were freed -- no leaks are possible
+ ==658468==
+ ==658468== For counts of detected and suppressed errors, rerun with: -v
+ ==658468== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+ Valgrind - SimpleTestList
+ ==658356==
+ ==658356== HEAP SUMMARY:
+ ==658356==     in use at exit: 0 bytes in 0 blocks
+ ==658356==   total heap usage: 81 allocs, 81 frees, 2,188 bytes allocated
+ ==658356==
+ ==658356== All heap blocks were freed -- no leaks are possible
+ ==658356==
+ ==658356== For counts of detected and suppressed errors, rerun with: -v
+ ==658356== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+ Valgrind - UnitTestList
+ ==656749==
+ ==656749== HEAP SUMMARY:
+ ==656749==     in use at exit: 0 bytes in 0 blocks
+ ==656749==   total heap usage: 141 allocs, 156 frees, 2,968 bytes allocated
+ ==656749==
+ ==656749== All heap blocks were freed -- no leaks are possible
+ ==656749==
+ ==656749== For counts of detected and suppressed errors, rerun with: -v
+ ==656749== ERROR SUMMARY: 25 errors from 25 contexts (suppressed: 0 from 0)
