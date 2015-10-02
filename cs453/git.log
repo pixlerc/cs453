@@ -1,3 +1,21 @@
+commit 4f73dbfecfc73a256bae55f1bdb9f9fb8fd6ad23
+Author: Christian R Pixler <cpixler@onyx.boisestate.edu>
+Date:   Thu Oct 1 21:14:36 2015 -0600
+
+    Fixed errors from runnig make
+
+commit 84a458131966031a63a2b23e13a93f2d79e0091d
+Author: Christian R Pixler <cpixler@onyx.boisestate.edu>
+Date:   Thu Oct 1 21:05:17 2015 -0600
+
+    Added comments to functions for doxygen
+
+commit ff726a8f6b721dc5bfc38412d1b4996f6905a049
+Author: Christian R Pixler <cpixler@onyx.boisestate.edu>
+Date:   Thu Oct 1 20:39:36 2015 -0600
+
+    Wrote my README for this project
+
 commit 6b01fa6dac4e45b45280782b8142c9252c7ff207
 Author: Christian R Pixler <cpixler@onyx.boisestate.edu>
 Date:   Thu Oct 1 13:19:05 2015 -0600
