@@ -27,12 +27,12 @@ char *toString(const void *obj)
     JobPtr myobj = (JobPtr) obj;
     char *temp;
     temp =
-	(char *) malloc(sizeof(char) * strlen(myobj->original_command) +
+	(char *) malloc(sizeof(char) * strlen(myobj->line) +
 			1 + MAXPID_DIGITS + 4);
-    sprintf(temp, "%d (%d) %s %s \"%s\"", myobj->pid, myobj->job_id,
-	    myobj->job_state == RUNNING ? "Running" : "Completed",
-	    myobj->exit_status == NORMAL ? "Normal" : "Problem",
-	    myobj->original_command);
+    sprintf(temp, "%d (%d) %s %s \"%s\"", myobj->pid, myobj->jobId,
+	    myobj->jobState == RUNNING ? "Running" : "Completed",
+	    myobj->exitStatus == NORMAL ? "Normal" : "Problem",
+	    myobj->line);
     return temp;
 }
 
@@ -41,11 +41,11 @@ void freeJob(const void *obj)
     JobPtr myobj = (JobPtr) obj;
     if (myobj == NULL)
 	return;
-    free(myobj->original_command);
+    free(myobj->line);
     free(myobj);
 }
 
 void printJob(JobPtr job)
 {
-    printf("[%d] %d %s\n", job->job_id, job->pid, job->original_command);
+    printf("[%d] %d %s\n", job->jobId, job->pid, job->line);
 }

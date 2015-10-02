@@ -285,10 +285,10 @@ void updateJobs()
 
     do {
 	Job *job = (Job *) (node->obj);
-	job->job_state = state(job->pid);
+	job->jobState = state(job->pid);
 
-	if (job->job_state == COMPLETE) {
-	    job->exit_status = exitStatus(job->pid);
+	if (job->jobState == COMPLETE) {
+	    job->exitStatus = exitStatus(job->pid);
 	}
     }
     while ((node = node->next));
@@ -370,7 +370,7 @@ void removeJobs()
     while (node != NULL) {
 	Job *job = (Job *) (node->obj);
 
-	if (job->job_state == COMPLETE) {
+	if (job->jobState == COMPLETE) {
 	    Node *copy = node->next;
 	    freeNode(removeNode(jobs, node), freeJob);
 	    node = copy;
