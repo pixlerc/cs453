@@ -21,14 +21,19 @@ Boolean startBackground(char *, char **, int);
 Boolean executeCommand(char *, char **);
 void removeAmpersand(char **, int);
 void updateBackground(int, char *);
-void printCommands(char **);
-void freeCommands(char *, char **);
+void freeTokens(char *, char **);
 void goHome();
 void updateJobs();
 void removeJobs();
 void displayJobs();
 void printAllJobs();
 
+/**
+ * This is main.  This is the heart of mydash
+ * @param argc - argument count
+ * @param **argv - arguments
+ * @return int - exit status
+ */
 int main(int argc, char **argv)
 {
     DASH_PROMPT = "mydash-->";
@@ -57,7 +62,6 @@ int main(int argc, char **argv)
 	add_history(line);
 
 	if (doWork(line, tokens)) {
-	    //freeCommands(line, tokens);
 	    continue;
 	}
 
@@ -74,8 +78,6 @@ int main(int argc, char **argv)
 	    } else {
 		executeCommand(line, tokens);
 	    }
-
-	    //freeCommands(line, tokens);
 	    exit(EXIT_FAILURE);
 	}
 
@@ -101,14 +103,17 @@ int main(int argc, char **argv)
 		cStatus[i] = 0;
 	    }
 	}
-
-	//freeCommands(line, tokens);
     }
 
     regfree(&word);
     exit(EXIT_SUCCESS);
 }
 
+/**
+ * This will split the arguments into array indexs
+ * @param *line - the arguments entered by the user
+ * @eturn char ** - an array of tokens from line
+ */
 char **getTokens(char *line)
 {
     char *next;
@@ -137,6 +142,11 @@ char **getTokens(char *line)
 
 }
 
+/**
+ * Checks to see if the command entered should be a background job or not
+ * @param **tokens - the arguments entered by the user
+ * @return int - the index where the apersand exists or -1 if it does not
+ */
 int isBackground(char **tokens)
 {
     int i;
@@ -155,12 +165,24 @@ int isBackground(char **tokens)
     return -1;
 }
 
+/**
+ * Runs the arguments passed by the user in the background
+ * @param *line - the arguments entered by the user
+ * @param *char ** tokens - line split into an array
+ * @param ampersand - the location of ampersand in tokens
+ * @return Boolean - If the function succeeded or not
+ */
 Boolean startBackground(char *line, char **tokens, int ampersand)
 {
     removeAmpersand(tokens, ampersand);
     return executeCommand(line, tokens);
 }
 
+/**
+ * This adds the background job to the list
+ * @param pid - process id
+ * @param *line - the arguments entered by the user
+ */
 void updateBackground(int pid, char *line)
 {
     char *copy = (char *) malloc(strlen(line) + 1 * sizeof(char));
@@ -170,14 +192,20 @@ void updateBackground(int pid, char *line)
     Job *job = createJob(pid, copy, ++jobIndex);
     Node *node = createNode(job);
     addAtRear(jobs, node);
+    printAllJobs();	
 }
 
-void removeAmpersand(char **commands, int ampersand)
+/**
+ * Removes the ampersand from tokens
+ * @param **tokens - the arguments entered by the user
+ * @param ampersand - the index of the ampersand in tokens
+ */
+void removeAmpersand(char **tokens, int ampersand)
 {
-    char *token = commands[ampersand];
+    char *token = tokens[ampersand];
 
     if (strlen(token) == 1) {
-	commands[ampersand] = (char *) 0;
+	tokens[ampersand] = (char *) 0;
 	return;
     }
 
@@ -189,9 +217,11 @@ void removeAmpersand(char **commands, int ampersand)
 
 	token++;
     }
-
 }
 
+/**
+ * Changes the directory to the users home directory
+ */
 void goHome()
 {
     struct passwd *pwd;
@@ -211,6 +241,10 @@ void goHome()
     chdir(dir);
 }
 
+/**
+ * Gets the current working directory
+ * @return char* - return the current directory
+ */
 char *getDirectory()
 {
     char *dir = (char *) malloc(MAX_DIRECTORY * sizeof(char));
@@ -225,6 +259,12 @@ char *getDirectory()
 
 }
 
+/**
+ * Executes the command
+ * @param *line - the arguments entered by the user
+ * @param **tokens - the line split into an array
+ * @return Boolean - return the success of the function
+ */
 Boolean executeCommand(char *line, char **tokens)
 {
     execvp(tokens[0], tokens);
@@ -232,6 +272,9 @@ Boolean executeCommand(char *line, char **tokens)
     return FALSE;
 }
 
+/**
+ * Updates each jobs current state
+ */
 void updateJobs()
 {
     Node *node = jobs->head;
@@ -251,6 +294,11 @@ void updateJobs()
     while ((node = node->next));
 }
 
+/**
+ * Gets the state of the process
+ * @param pid - process id
+ * @return int - returns RUNNING or COMPLETE
+ */
 int state(int pid)
 {
     int status;
@@ -264,6 +312,11 @@ int state(int pid)
 
 }
 
+/**
+ * Gets the exit status of the process
+ * @param pid - process id
+ * @return int - returns NORMAL or PROBLEM
+ */
 int exitStatus(int pid)
 {
     int status;
@@ -280,20 +333,25 @@ int exitStatus(int pid)
     }
 
 }
-
-int doWork(char *line, char **commands)
+/**
+ * Process built in commands
+ * @param *line - the arguments entered by the user
+ * @param **tokens - the line split into an array
+ * @retun int - return 1 for success and 0 for failure
+ */
+int doWork(char *line, char **tokens)
 {
-    char *command = commands[0];
+    char *command = tokens[0];
 
-    if (strstr(command, "cd") && commands[1] == NULL) {
+    if (strstr(command, "cd") && tokens[1] == NULL) {
 	goHome();
 	return 1;
-    } else if (strstr(command, "cd") && commands[1] != NULL) {
-	chdir(commands[1]);
+    } else if (strstr(command, "cd") && tokens[1] != NULL) {
+	chdir(tokens[1]);
 	return 1;
     } else if (strstr(command, "exit")) {
 	freeList(jobs);
-	freeCommands(line, commands);
+	freeTokens(line, tokens);
 	kill(getpid(), SIGKILL);
     } else if (strstr(command, "jobs")) {
 	printAllJobs();
@@ -302,6 +360,9 @@ int doWork(char *line, char **commands)
     return 0;
 }
 
+/**
+ * Removes completed jobs from the list
+ */
 void removeJobs()
 {
     Node *node = jobs->head;
@@ -328,17 +389,12 @@ void removeJobs()
 
 }
 
-void printCommands(char **tokens)
-{
-    printf("%s\n", tokens[0]);
-
-    int i;
-    for (i = 0; i < 5; i++) {
-	printf("%d %s\n", i, tokens[i]);
-    }
-}
-
-void freeCommands(char *line, char **tokens)
+/**
+ * Frees the tokens and line
+ * @param *line - the argumentts entered by the user
+ * @param **tokens - the line split into an array
+ */
+void freeTokens(char *line, char **tokens)
 {
     free(line);
 
@@ -350,16 +406,22 @@ void freeCommands(char *line, char **tokens)
     free(tokens);
 }
 
+/**
+ * Prints the list of jobs
+ */
 void displayJobs()
 {
     if (jobs->size == 0) {
-	printf("No jobs");
+	printf("No jobs\n");
     }
 
     printList(jobs);
 
 }
 
+/**
+ * Prints all of the jobs after updating their status
+ */
 void printAllJobs()
 {
     updateJobs();

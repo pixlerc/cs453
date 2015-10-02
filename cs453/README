@@ -1,0 +1,83 @@
+****************
+* Project 1/Shell part 1
+* Class CS 453
+* Date 10/02/2015
+* Christian Pixler
+****************
+
+OVERVIEW:
+
+ This program extends the functionality of the simple shell
+ program, alomost mimiking the dash.  
+
+INCLUDED FILES:
+
+ - dash:
+	- common.h
+	- doxygen-config
+	- error.c
+	- Job.c
+	- Job.h
+	- loop.c
+	- Makefile
+	- ourhdr.h
+	- shell.c
+	- shell.h
+
+ - git.log
+
+ - list:
+	- doxygen-config
+
+	- include:
+
+	- lib:
+
+	- libsrc:
+		- common.h
+		- List.c
+		- List.h
+		- Makefile
+		- Node.c
+		- Node.h
+
+	- Makefile
+	- out
+	- README
+
+	- testsuite:
+		- Makefile
+		- Object.c
+		- Object.h
+		- RandomTestList.c
+		- SimpleTestList.c
+		- UnitTestList.c
+
+ - Makefile
+ - README
+
+BUILDING AND RUNNING:
+
+ To build: Run 'make' from the top directory.
+ To run: Run 'mydash' from the top directory.
+
+PROGRAM DESIGN:
+ 
+ I decided for the first go around, just to not confuse myself
+ and to keep things simple I would put everything into one file
+ I realize this is no the best idea, but it was easier to test
+ for me and less mistakes to make.  I am still using lots of 
+ function calls, they are just in one source file.  I tried to 
+ do everything that the assignment asked for, but not everything
+ went the way I wanted to, so some small details got left out.
+
+DISCUSSION:
+
+ I decided to use git because I could not figure out svn.  Though
+ it took me quite some time to figure out git too, but I found a 
+ guide for dummies online and used that to help me out.  I did 
+ not find this guide, however, until I was most of the way through
+ the project, thus the minimal amount of commits.  I did get it 
+ working though, so for future projects I should be good to go. 
+ I am having at least one issue, which is memory leaks.  I know to
+ free anything that is malloced, but I still ahve leasks somewhere.

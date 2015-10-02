@@ -1,3 +1,9 @@
+commit 6b01fa6dac4e45b45280782b8142c9252c7ff207
+Author: Christian R Pixler <cpixler@onyx.boisestate.edu>
+Date:   Thu Oct 1 13:19:05 2015 -0600
+
+    Updated Makefile in list folder to remove .so file from directory.
+
 commit a2fc4ad9e8b435c2fa1b1b3526f36beebd2dbc65
 Author: Christian R Pixler <cpixler@onyx.boisestate.edu>
 Date:   Thu Oct 1 12:43:17 2015 -0600

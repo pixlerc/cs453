@@ -17,5 +17,6 @@ dox:
 clean:
 	cd libsrc; make installclean
 	cd testsuite; make clean
+	rm libmylib.so
 	/bin/rm -fr docs doxygen.log
 
