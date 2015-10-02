@@ -1,23 +1,24 @@
 #include "Job.h"
 
-JobPtr createJob(const int pid, const char *original_command, int job_id)
+JobPtr createJob(const int pid, const char *line, int jobId)
 {
     JobPtr newJob = (JobPtr) malloc(sizeof(Job));
     newJob->pid = pid;
-    newJob->job_id = job_id;
-    newJob->original_command =
-	(char *) malloc(sizeof(char) * (strlen(original_command) + 1));
-    newJob->job_state = RUNNING;
-    newJob->exit_status = NORMAL;
-    strcpy(newJob->original_command, original_command);
+    newJob->jobId = jobId;
+    newJob->line = (char *) malloc(sizeof(char) * (strlen(line) + 1));
+    newJob->jobState = RUNNING;
+    newJob->exitStatus = NORMAL;
+    strcpy(newJob->line, line);
     return newJob;
 }
+
 
 int compareTo(const void *obj, const void *other)
 {
     JobPtr o1 = (JobPtr) obj;
     JobPtr o2 = (JobPtr) other;
-    if (o1->pid == o2->pid) return 0;
+    if (o1->pid == o2->pid)
+	return 0;
     return o1->pid < o2->pid ? -1 : 1;
 }
 

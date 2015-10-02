@@ -14,6 +14,6 @@ void freeNode(const NodePtr node, void (*freeObject) (const void *))
 {
     if (node == NULL)
 	return;
-    (*freeObject)(node->obj);
+    (*freeObject) (node->obj);
     free(node);
 }

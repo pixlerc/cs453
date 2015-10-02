@@ -25,6 +25,12 @@
 #define MAX_DIRECTORY 1024
 #define FAIL "FAIL"
 
+/**
+ * Process built in commands
+ * @param char* - the arguments passed by the user
+ * @param char** - the arguments passed by the user split into an array
+ * @return int - returns 1 for success and 0 for failure
+ */
 int doWork(char *, char **);
 
 #endif				/* MYDASH_H */

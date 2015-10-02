@@ -192,7 +192,7 @@ void updateBackground(int pid, char *line)
     Job *job = createJob(pid, copy, ++jobIndex);
     Node *node = createNode(job);
     addAtRear(jobs, node);
-    printAllJobs();	
+    printAllJobs();
 }
 
 /**
@@ -333,12 +333,8 @@ int exitStatus(int pid)
     }
 
 }
-/**
- * Process built in commands
- * @param *line - the arguments entered by the user
- * @param **tokens - the line split into an array
- * @retun int - return 1 for success and 0 for failure
- */
+
+
 int doWork(char *line, char **tokens)
 {
     char *command = tokens[0];
